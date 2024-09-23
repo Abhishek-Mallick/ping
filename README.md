@@ -1,6 +1,6 @@
-### Ping
+## Ping
 
-Techstacks used :
+### Techstacks used :
  - NodeJS : backend code which will be running GraphQL server running inside nodejs environment
  - GraphQL : Query language for API and runtime for fulfilling queries with existing data - Alternate to RestAPI
     - Apollo Server : for hosting our GraphQL server
