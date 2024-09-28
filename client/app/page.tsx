@@ -61,7 +61,7 @@ export default function Home() {
             <button className="bg-blue-400 text-white font-semibold text-lg py-3 px-3 rounded-full hover:bg-blue-500 transition duration-200 ease-in-out w-full mt-4">Tweet</button>
           </div>
         </div>
-        <div className="col-span-5 border-r-[1px] border-l-[1px] border-gray-600">
+        <div className="col-span-5 border-r-[1px] border-l-[1px] border-gray-600 h-screen overflow-scroll">
           <FeedCard />
           <FeedCard />
         </div>
