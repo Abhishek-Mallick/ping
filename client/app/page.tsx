@@ -5,6 +5,7 @@ import { FiHash } from "react-icons/fi";
 import { FaRegBell } from "react-icons/fa6";
 import { HiOutlineEnvelope } from "react-icons/hi2";
 import { IoBookmarkOutline } from "react-icons/io5";
+import FeedCard from "@/components/FeedCard";
 
 
 interface PingSidebarButton {
@@ -60,8 +61,9 @@ export default function Home() {
             <button className="bg-blue-400 text-white font-semibold text-lg py-2 px-4 rounded-full hover:bg-blue-500 transition duration-200 ease-in-out w-full mt-4">Tweet</button>
           </div>
         </div>
-        <div className="col-span-6 border-r-[1px] border-l-[1px]  border-r-slate-600 border-l-slate-600">
-          <h1 className="text-center">Middle Section</h1>
+        <div className="col-span-5 border-r-[1px] border-l-[1px] border-gray-600">
+          <FeedCard />
+          <FeedCard />
         </div>
         <div className="col-span-3"></div>
       </div>
