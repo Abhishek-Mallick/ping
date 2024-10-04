@@ -52,3 +52,5 @@ supabase/
 
 # Windows
 Thumbs.db
+
+build/
