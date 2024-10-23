@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { TbMessages } from "react-icons/tb";
 import { AiOutlineHome } from "react-icons/ai";
 import { FiHash } from "react-icons/fi";
@@ -6,7 +6,7 @@ import { FaRegBell } from "react-icons/fa6";
 import { HiOutlineEnvelope } from "react-icons/hi2";
 import { IoBookmarkOutline } from "react-icons/io5";
 import FeedCard from "@/components/FeedCard";
-
+import GoogleLoginButton from "@/components/Auth/GoogleLoginButton";
 
 interface PingSidebarButton {
   title: string;
@@ -44,6 +44,8 @@ const sidebarMenuItems : PingSidebarButton[] = [
   }
 ]
 export default function Home() {
+
+
   return (
     <div>
       <div className="grid grid-cols-12 h-screen w-screen px-56">
@@ -77,7 +79,12 @@ export default function Home() {
           <FeedCard />
           <FeedCard />
         </div>
-        <div className="col-span-3"></div>
+        <div className="col-span-3 p-5">
+          <div className="p-5 bg-slate-700 rounded-lg">
+            <h1 className="my-2 text-2xl">New to Ping?</h1>
+            <GoogleLoginButton />          
+          </div>
+        </div>
       </div>
     </div>
   );
