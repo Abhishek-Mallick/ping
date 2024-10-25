@@ -21,7 +21,12 @@ export default function GoogleLoginButton() {
     const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, {token: googleToken});
 
     toast.success("Verified successful");
-    console.log(verifyGoogleToken);
+    console.log("verifyGoogleToken: ",verifyGoogleToken);
+    console.log("googleToken: ",googleToken);
+
+    // if user is verified store the token in local storage
+    if(verifyGoogleToken)
+        window.localStorage.setItem("__ping_token", verifyGoogleToken);
   }, [])
 
   return (
