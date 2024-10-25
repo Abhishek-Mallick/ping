@@ -2,11 +2,27 @@
 
 import { useCallback } from "react"; // Import useCallback
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { graphqlClient } from "@/clients/api";
+import { verifyUserGoogleTokenQuery } from "@/graphql/query/user";
+import toast from "react-hot-toast";
 
 export default function GoogleLoginButton() {
-  const handleLoginWithGoogle = useCallback((cred: CredentialResponse) => {
-    console.log(cred); // Log the credentials received
+  const handleLoginWithGoogleConsole = useCallback((cred: CredentialResponse) => {
+    console.log(cred); // Log the credentials received -- old func to log creds to console
   }, []);
+
+  const handleLoginWithGoogle = useCallback(async (cred: CredentialResponse) => {
+    const googleToken = cred.credential;
+
+    if(!googleToken)
+      return toast.error("Google login failed");
+    
+    // Verify the google token
+    const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, {token: googleToken});
+
+    toast.success("Verified successful");
+    console.log(verifyGoogleToken);
+  }, [])
 
   return (
     <GoogleLogin

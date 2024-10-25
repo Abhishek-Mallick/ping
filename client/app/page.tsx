@@ -7,6 +7,11 @@ import { HiOutlineEnvelope } from "react-icons/hi2";
 import { IoBookmarkOutline } from "react-icons/io5";
 import FeedCard from "@/components/FeedCard";
 import GoogleLoginButton from "@/components/Auth/GoogleLoginButton";
+import { CredentialResponse } from "@react-oauth/google";
+import toast from "react-hot-toast";
+import { GraphQLClient } from "graphql-request";
+import { graphqlClient } from "@/clients/api";
+import { verifyUserGoogleTokenQuery } from "@/graphql/query/user";
 
 interface PingSidebarButton {
   title: string;
@@ -45,6 +50,18 @@ const sidebarMenuItems : PingSidebarButton[] = [
 ]
 export default function Home() {
 
+  const handleLoginWithGoogle = useCallback(async (cred: CredentialResponse) => {
+    const googleToken = cred.credential;
+
+    if(!googleToken)
+      return toast.error("Google login failed");
+    
+    // Verify the google token
+    const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, {token: googleToken});
+
+    toast.success("Verified successful");
+    console.log(verifyGoogleToken);
+  }, [])
 
   return (
     <div>
