@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { GraphQLClient } from "graphql-request";
 import { graphqlClient } from "@/clients/api";
 import { verifyUserGoogleTokenQuery } from "@/graphql/query/user";
+import { useCurrentUser } from "@/hooks/user";
 
 interface PingSidebarButton {
   title: string;
@@ -52,13 +53,17 @@ const sidebarMenuItems : PingSidebarButton[] = [
 ]
 
 export default function Home() {
-  const [isUserSignedIn, setIsUserSignedIn] = useState<boolean>(false);
 
-  useEffect(() => {
-    // Check if the user is signed in by looking for the __ping_token in local storage
-    const token = localStorage.getItem('__ping_token');
-    setIsUserSignedIn(!!token);
-  }, []);
+  const { user } = useCurrentUser();
+  console.log(user);
+
+  // const [isUserSignedIn, setIsUserSignedIn] = useState<boolean>(false);
+
+  // useEffect(() => {
+  //   // Check if the user is signed in by looking for the __ping_token in local storage
+  //   const token = localStorage.getItem('__ping_token');
+  //   setIsUserSignedIn(!!token);
+  // }, []);
 
   const handleLoginWithGoogle = useCallback(async (cred: CredentialResponse) => {
     const googleToken = cred.credential;
@@ -111,7 +116,7 @@ export default function Home() {
           <FeedCard />
         </div>
         <div className="col-span-3 p-5">
-          { !isUserSignedIn && ( // Conditionally render the div based on user sign-in status
+          { !user && ( 
             <div className="p-5 bg-slate-700 rounded-lg">
               <h1 className="my-2 text-2xl">New to Ping?</h1>
               <GoogleLoginButton />          

@@ -5,11 +5,14 @@ import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { graphqlClient } from "@/clients/api";
 import { verifyUserGoogleTokenQuery } from "@/graphql/query/user";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query"
 
 export default function GoogleLoginButton() {
   const handleLoginWithGoogleConsole = useCallback((cred: CredentialResponse) => {
     console.log(cred); // Log the credentials received -- old func to log creds to console
   }, []);
+
+  const queryClient = useQueryClient();
 
   const handleLoginWithGoogle = useCallback(async (cred: CredentialResponse) => {
     const googleToken = cred.credential;
@@ -27,13 +30,14 @@ export default function GoogleLoginButton() {
           window.localStorage.setItem("__ping_token", verifyGoogleToken);
           toast.success("Verified successful"); // Moved success toast here
       }
+      queryClient.invalidateQueries('curent-user');
     } catch (error) {
       console.error("Verification error:", error);  // Log full error details
       toast.error("Token verification failed.");
     }
     
     console.log("googleToken: ", googleToken); // Moved outside of the try-catch
-  }, [])
+  }, [queryClient])
 
   return (
     <GoogleLogin
