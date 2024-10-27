@@ -23,7 +23,11 @@ class JWTService {
         if (!JWT_SECRET) {
             throw new Error("JWT_SECRET is not defined");
         }
-        return JWT.verify(token, JWT_SECRET) as JWTUser;
+        try {
+            return JWT.verify(token, JWT_SECRET) as JWTUser;
+        } catch(error) {
+            return null;
+        }
     }
 }
 

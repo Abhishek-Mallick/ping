@@ -18,15 +18,21 @@ export default function GoogleLoginButton() {
       return toast.error("Google login failed");
     
     // Verify the google token
-    const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, {token: googleToken});
-
-    toast.success("Verified successful");
-    console.log("verifyGoogleToken: ",verifyGoogleToken);
-    console.log("googleToken: ",googleToken);
-
-    // if user is verified store the token in local storage
-    if(verifyGoogleToken)
-        window.localStorage.setItem("__ping_token", verifyGoogleToken);
+    try {
+      const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, { token: googleToken });
+      console.log("Verification result:", verifyGoogleToken);
+      
+      // if user is verified store the token in local storage
+      if(verifyGoogleToken) {
+          window.localStorage.setItem("__ping_token", verifyGoogleToken);
+          toast.success("Verified successful"); // Moved success toast here
+      }
+    } catch (error) {
+      console.error("Verification error:", error);  // Log full error details
+      toast.error("Token verification failed.");
+    }
+    
+    console.log("googleToken: ", googleToken); // Moved outside of the try-catch
   }, [])
 
   return (

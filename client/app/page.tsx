@@ -1,4 +1,6 @@
-import React, { useCallback } from "react";
+"use client"; // Add this line to mark the component as a Client Component
+
+import React, { useCallback, useEffect, useState } from "react";
 import { TbMessages } from "react-icons/tb";
 import { AiOutlineHome } from "react-icons/ai";
 import { FiHash } from "react-icons/fi";
@@ -48,20 +50,32 @@ const sidebarMenuItems : PingSidebarButton[] = [
     icon: <HiOutlineEnvelope />
   }
 ]
+
 export default function Home() {
+  const [isUserSignedIn, setIsUserSignedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Check if the user is signed in by looking for the __ping_token in local storage
+    const token = localStorage.getItem('__ping_token');
+    setIsUserSignedIn(!!token);
+  }, []);
 
   const handleLoginWithGoogle = useCallback(async (cred: CredentialResponse) => {
     const googleToken = cred.credential;
 
-    if(!googleToken)
-      return toast.error("Google login failed");
-    
-    // Verify the google token
-    const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, {token: googleToken});
+    if (!googleToken) return toast.error("Google login failed");
 
-    toast.success("Verified successful");
-    console.log(verifyGoogleToken);
-  }, [])
+    // Verify the google token
+    console.log("Google token:", googleToken);
+    console.log("GraphQL client:", graphqlClient);
+    try {
+      const { verifyGoogleToken } = await graphqlClient.request(verifyUserGoogleTokenQuery, { token: googleToken });
+      console.log("Verification result:", verifyGoogleToken);
+    } catch (error) {
+      console.error("GraphQL verification error:", error);
+      toast.error("An error occurred during token verification.");
+    }
+  }, []);
 
   return (
     <div>
@@ -97,10 +111,12 @@ export default function Home() {
           <FeedCard />
         </div>
         <div className="col-span-3 p-5">
-          <div className="p-5 bg-slate-700 rounded-lg">
-            <h1 className="my-2 text-2xl">New to Ping?</h1>
-            <GoogleLoginButton />          
-          </div>
+          { !isUserSignedIn && ( // Conditionally render the div based on user sign-in status
+            <div className="p-5 bg-slate-700 rounded-lg">
+              <h1 className="my-2 text-2xl">New to Ping?</h1>
+              <GoogleLoginButton />          
+            </div>
+          )}
         </div>
       </div>
     </div>
