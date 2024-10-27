@@ -1,4 +1,4 @@
-"use client"; // Add this line to mark the component as a Client Component
+"use client";
 
 import React, { useCallback, useEffect, useState } from "react";
 import { TbMessages } from "react-icons/tb";
@@ -15,6 +15,7 @@ import { GraphQLClient } from "graphql-request";
 import { graphqlClient } from "@/clients/api";
 import { verifyUserGoogleTokenQuery } from "@/graphql/query/user";
 import { useCurrentUser } from "@/hooks/user";
+import Image from "next/image";
 
 interface PingSidebarButton {
   title: string;
@@ -85,7 +86,7 @@ export default function Home() {
   return (
     <div>
       <div className="grid grid-cols-12 h-screen w-screen px-56">
-        <div className="col-span-3 justify-start pt-2 px-4 ml-16">
+        <div className="col-span-3 justify-start pt-2 px-4 ml-16 relative">
           <div className="text-4xl h-fit w-fit hover:bg-gray-600 rounded-full p-4 cursor-pointer transition-all duration-200">
             <TbMessages />
           </div>
@@ -96,8 +97,14 @@ export default function Home() {
                 <span>{item.title}</span>
                 </li>)}
             </ul>
-            <button className="bg-blue-400 text-white font-semibold text-lg py-3 px-3 rounded-full hover:bg-blue-500 transition duration-200 ease-in-out w-full mt-4">Tweet</button>
+            <button className="bg-blue-400 text-white font-semibold text-lg py-3 px-3 rounded-full hover:bg-blue-500 transition duration-200 ease-in-out w-full mt-4">Ping</button>
           </div>
+        {user && (<div className="absolute bottom-5 flex gap-2 bg-slate-800 px-3 py-2 rounded-full">
+          {user && (user.profileImageURL && <Image className="rounded-full" src={user?.profileImageURL} alt="user-image" height={50} width={50} />)}
+        <div>
+          <h3 className="text-xl">{user.firstName} {user.lastName}</h3>
+        </div>
+        </div>)}
         </div>
         <div 
           className="col-span-5 border-r-[1px] border-l-[1px] border-gray-600 h-screen overflow-scroll"
