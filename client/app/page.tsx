@@ -16,6 +16,7 @@ import { graphqlClient } from "@/clients/api";
 import { verifyUserGoogleTokenQuery } from "@/graphql/query/user";
 import { useCurrentUser } from "@/hooks/user";
 import Image from "next/image";
+import { BsImages } from "react-icons/bs";
 
 interface PingSidebarButton {
   title: string;
@@ -56,8 +57,13 @@ const sidebarMenuItems : PingSidebarButton[] = [
 export default function Home() {
 
   const { user } = useCurrentUser();
-  console.log(user);
 
+  const handleSelectImage = useCallback(() => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.click();
+  }, [])
   // const [isUserSignedIn, setIsUserSignedIn] = useState<boolean>(false);
 
   // useEffect(() => {
@@ -113,6 +119,22 @@ export default function Home() {
             scrollbarWidth: 'none'
           }}
         >
+          <div>
+            <div className='border border-gray-600 p-5 hover:bg-slate-900 transition-all cursor-pointer border-r-0 border-l-0 border-b-0'>
+              <div className='grid grid-cols-12 gap-3'>
+                <div className='col-span-1'>
+                  {user?.profileImageURL ? <Image src={user?.profileImageURL} className="rounded-full" alt="user-image" height={50} width={50} /> : null}
+                </div>
+                <div className="col-span-11">
+                  <textarea className="w-full bg-transparent border-none focus:outline-none text-xl px-3 border-b border-slate-700" placeholder="What's on your mind?" rows={3}></textarea>
+                  <div className="mt-2 flex justify-between items-center">
+                    <BsImages onClick={handleSelectImage} className="text-xl" />
+                    <button className="bg-blue-400 text-white font-semibold text-sm py-2 px-4 rounded-full hover:bg-blue-500 transition duration-200 ease-in-out mt-4">Ping</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <FeedCard />
           <FeedCard />
           <FeedCard />
