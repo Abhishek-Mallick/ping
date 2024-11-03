@@ -11,12 +11,16 @@ const mutation = {
         if(!ctx.user) {
             throw new Error("Unauthorized");
         }
-        await prismaClient.ping.create({
+        const ping = await prismaClient.ping.create({
             data: {
                 content: payload.content,
                 imageURL: payload.imageURL,
                 author: { connect: { id: ctx.user.id } },
             },
         });
-    }
-}
+
+        return ping;
+    },
+};
+
+export const resolvers = { mutation }

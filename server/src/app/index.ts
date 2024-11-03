@@ -6,6 +6,8 @@ import { prismaClient } from '../clients/db';
 import cors from 'cors';
  
 import { User } from "./user"
+import { Ping } from "./ping"
+
 import { GraphqlContext } from '../interfaces';
 import JWTService from '../services/jwt';
 
@@ -18,14 +20,22 @@ export async function initServer() {
     const graphqlServer = new ApolloServer<GraphqlContext>({
         typeDefs: `
             ${User.types}
+            ${Ping.types}
             type Query {
                 ${User.queries}
+            }
+
+            type Mutation {
+                ${Ping.mutations}
             }
         `,
         resolvers: {
             Query: {
                 ...User.resolvers.queries,
             },
+            Mutation: {
+                ...Ping.resolvers.mutation,
+            }
         },
       });
     
