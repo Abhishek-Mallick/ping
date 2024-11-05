@@ -23,6 +23,7 @@ export async function initServer() {
             ${Ping.types}
             type Query {
                 ${User.queries}
+                ${Ping.queries}
             }
 
             type Mutation {
@@ -32,10 +33,13 @@ export async function initServer() {
         resolvers: {
             Query: {
                 ...User.resolvers.queries,
+                ...Ping.resolvers.queries,
             },
             Mutation: {
                 ...Ping.resolvers.mutation,
-            }
+            },
+            ...Ping.resolvers.extraResolvers,
+            ...User.resolvers.extraResolvers,
         },
       });
     
