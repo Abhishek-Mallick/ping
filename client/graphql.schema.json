@@ -186,6 +186,22 @@
         "isOneOf": null,
         "fields": [
           {
+            "name": "getAllPings",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Ping",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "getCurrentUser",
             "description": null,
             "args": [],

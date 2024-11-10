@@ -17,6 +17,8 @@ import { verifyUserGoogleTokenQuery } from "@/graphql/query/user";
 import { useCurrentUser } from "@/hooks/user";
 import Image from "next/image";
 import { BsImages } from "react-icons/bs";
+import { useGetAllPings } from "@/hooks/ping";
+import { Ping } from "@/gql/graphql";
 
 interface PingSidebarButton {
   title: string;
@@ -57,6 +59,7 @@ const sidebarMenuItems : PingSidebarButton[] = [
 export default function Home() {
 
   const { user } = useCurrentUser();
+  const { pings = [] } = useGetAllPings();
 
   const handleSelectImage = useCallback(() => {
     const input = document.createElement('input');
@@ -135,14 +138,17 @@ export default function Home() {
               </div>
             </div>
           </div>
+          {
+            pings?.map(ping => ping ? <FeedCard key={ping?.id} data={ping as Ping} /> : null)
+          }
+          {/* <FeedCard />
           <FeedCard />
           <FeedCard />
           <FeedCard />
           <FeedCard />
           <FeedCard />
           <FeedCard />
-          <FeedCard />
-          <FeedCard />
+          <FeedCard /> */}
         </div>
         <div className="col-span-3 p-5">
           { !user && ( 
